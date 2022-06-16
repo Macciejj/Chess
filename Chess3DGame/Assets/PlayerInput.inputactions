@@ -1,0 +1,39 @@
+{
+    "name": "PlayerInput",
+    "maps": [
+        {
+            "name": "Player",
+            "id": "d58332b2-60a9-4353-b5d1-a7b8dda47350",
+            "actions": [
+                {
+                    "name": "Select",
+                    "type": "Button",
+                    "id": "94b91ff8-36e3-40f1-83b9-2e64483e5bcb",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "fe882640-b7b5-4bce-82e2-f5561fa7346f",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Game",
+                    "action": "Select",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": [
+        {
+            "name": "Game",
+            "bindingGroup": "Game",
+            "devices": []
+        }
+    ]
+}
