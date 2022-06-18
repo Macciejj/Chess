@@ -6,11 +6,19 @@ using UnityEngine.EventSystems;
 
 public class PawnsController : MonoBehaviour, IPointerDownHandler
 {
+
     Color selectedColor = Color.red;
     Color defaultColor;
     Material material;
     PlayerInput inputActions;
     InputAction select;
+    Vector3 canGoTilePosition = new Vector3(0, 0, 1);
+   // [SerializeField] Tile[,] tiles = new Tile[8, 8];
+
+
+    
+
+    bool[,] pathPoints = new bool[8,8];
 
     bool isSelected = false;
 
@@ -28,11 +36,36 @@ public class PawnsController : MonoBehaviour, IPointerDownHandler
     {
         select.Disable();
     }
+    void FillPawnPathPoints()
+    {
+        for (int i = 0; i < 8; i++)
+        {
+            for (int j = 0; j < 8; j++)
+            {
+                pathPoints[i,j] = false;
+            }
+        }
+        pathPoints[0+Mathf.RoundToInt(transform.position.x), 1 + Mathf.RoundToInt(transform.position.z)] = true;
+        print(Mathf.RoundToInt(transform.position.x) + " " + Mathf.RoundToInt(transform.position.z));
+    }
+    void FindCanGoTile()
+    {
+        for (int i = 0; i < 8; i++)
+        {
+            for (int j = 0; j < 8; j++)
+            {
+                if (pathPoints[i, j]) {
+                    gameObject.transform.Translate(canGoTilePosition);
+                        }
+            }
+        }
+    }
     void Start()
     {
-
+        FillPawnPathPoints();
         material = gameObject.GetComponent<MeshRenderer>().material;
         defaultColor = material.color;
+        FindCanGoTile();
     }
 
     
