@@ -12,8 +12,8 @@ public class PawnsController : MonoBehaviour, IPointerDownHandler
     Material material;
     PlayerInput inputActions;
     InputAction select;
-    Vector3 canGoTilePosition = new Vector3(0, 0, 1);
-   // [SerializeField] Tile[,] tiles = new Tile[8, 8];
+    Vector3 canGoTileRelativePosition = new Vector3(0, 0, 1);
+    [SerializeField] Tile[] tiles = new Tile[64];
 
 
     
@@ -50,15 +50,18 @@ public class PawnsController : MonoBehaviour, IPointerDownHandler
     }
     void FindCanGoTile()
     {
+        bool canGo = false;
         for (int i = 0; i < 8; i++)
         {
             for (int j = 0; j < 8; j++)
             {
-                if (pathPoints[i, j]) {
-                    gameObject.transform.Translate(canGoTilePosition);
-                        }
+                if (canGoTileRelativePosition + transform.position == new Vector3(i, transform.position.y, j))
+                {
+                    canGo = true;
+                }
             }
         }
+        if(canGo) gameObject.transform.Translate(canGoTileRelativePosition);
     }
     void Start()
     {
