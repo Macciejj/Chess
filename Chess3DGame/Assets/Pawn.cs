@@ -2,13 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PawnsMover : MonoBehaviour
+public class Pawn : MonoBehaviour
 {
-    public void MovePawnTo(float x, float z)
-    {
-        transform.position = new Vector3(x,transform.position.y,z);
-
-    }
     // Start is called before the first frame update
     void Start()
     {

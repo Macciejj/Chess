@@ -5,10 +5,18 @@ using UnityEngine.EventSystems;
 
 public class Tile : MonoBehaviour, IPointerDownHandler
 {
-    public bool isPickable = false;
+    public bool isClickable = false;
+    public Pawn pawn;
+
     public void OnPointerDown(PointerEventData eventData)
     {
-       /// throw new System.NotImplementedException();
+        if(pawn!=null && isClickable)
+        {
+            pawn.GetComponent<PawnsMover>().MovePawnTo(transform.position.x, transform.position.z);
+            pawn.GetComponent<PawnsController>().DeselectPawn();
+        }
+        
+
     }
 
     // Start is called before the first frame update
