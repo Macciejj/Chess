@@ -6,17 +6,20 @@ using UnityEngine.EventSystems;
 
 public class PawnsController : MonoBehaviour, IPointerDownHandler
 {
-
+    Tile markedTile = new Tile();
     Color selectedColor = Color.red;
-    Color defaultColor;
-    Material material;
+    Color defaultPawnColor;//
+    Material pawnMaterial;
+    Color defaultTileColor;//
+    Material tileMaterial;
     PlayerInput inputActions;
     InputAction select;
-    Vector3 canGoTileRelativePosition = new Vector3(0, 0, 1);
+    Vector3 canGoToTileRelativePosition = Vector3.forward;
     [SerializeField] Tile[] tiles = new Tile[64];
+    PawnsMover pawnsMover = new PawnsMover();
 
 
-    
+
 
     bool[,] pathPoints = new bool[8,8];
 
@@ -48,57 +51,85 @@ public class PawnsController : MonoBehaviour, IPointerDownHandler
         pathPoints[0+Mathf.RoundToInt(transform.position.x), 1 + Mathf.RoundToInt(transform.position.z)] = true;
         print(Mathf.RoundToInt(transform.position.x) + " " + Mathf.RoundToInt(transform.position.z));
     }
-    void FindCanGoTile()
-    {
-        bool canGo = false;
-        for (int i = 0; i < 8; i++)
-        {
-            for (int j = 0; j < 8; j++)
-            {
-                if (canGoTileRelativePosition + transform.position == new Vector3(i, transform.position.y, j))
-                {
-                    canGo = true;
-                }
-            }
-        }
-        if(canGo) gameObject.transform.Translate(canGoTileRelativePosition);
-    }
+    //void FindCanGoTile()
+    //{
+    //    bool canGo = false;
+    //    for (int i = 0; i < 8; i++)
+    //    {
+    //        for (int j = 0; j < 8; j++)
+    //        {
+    //            if (canGoToTileRelativePosition + transform.position == new Vector3(i, transform.position.y, j))
+    //            {
+    //                canGo = true;
+    //            }
+    //        }
+    //    }
+    //    if(canGo) gameObject.transform.Translate(canGoToTileRelativePosition);
+    //}
     void Start()
     {
         FillPawnPathPoints();
-        material = gameObject.GetComponent<MeshRenderer>().material;
-        defaultColor = material.color;
-        FindCanGoTile();
+        pawnMaterial = gameObject.GetComponent<MeshRenderer>().material;
+        defaultPawnColor = pawnMaterial.color;
+        
+
+       // if(pawnsMover.MovePawnTo(PickCanGoToTiles().transform.position.x, PickCanGoToTiles().transform.position.z);
     }
 
-    
 
-    // Update is called once per frame
-    void Update()
+
+    void PickCanGoToTiles()
     {
-        print(isSelected);
+        
+        if (isSelected)
+        {
+            foreach (var tile in tiles)
+            {
+                if (tile.transform.position - canGoToTileRelativePosition == new Vector3(transform.position.x, tile.transform.position.y, transform.position.z))
+                {
+                    tileMaterial = tile.GetComponent<MeshRenderer>().material;
+                    defaultTileColor = tileMaterial.color;
+                    tileMaterial.color = selectedColor;
+                    markedTile = tile;
+                }
+                    
+            }
+            
+        }
+        else if(markedTile!=null)
+        {
+            tileMaterial.color = defaultTileColor;
+        }
+        
     }
-    public void OnPointerDown(PointerEventData eventData)
+    void PickPawn()
     {
         if (isSelected == true)
         {
             isSelected = false;
-            material.color = defaultColor;
+            pawnMaterial.color = defaultPawnColor;
         }
         else
         {
             isSelected = true;
-            material.color = selectedColor;
+            pawnMaterial.color = selectedColor;
         }
+    }
+    void SelectCanGoToTiles()
+    {
+
+    }
+    // Update is called once per frame
+    void Update()
+    {
         
     }
-    //private void Select(InputAction.CallbackContext callbackContext)
-    //{
-    //    if (isSelected==true)
-    //    {
-    //        isSelected = false;
-    //        material.color = defaultColor;
-    //    }
-        
-    //}
+    
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        PickPawn();
+        PickCanGoToTiles();
+
+    }
+
 }
